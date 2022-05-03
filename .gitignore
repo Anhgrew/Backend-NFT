@@ -3,3 +3,4 @@
 **/static/Data/*
 **/__pycache__
 **/.vscode
+**/*.pem
