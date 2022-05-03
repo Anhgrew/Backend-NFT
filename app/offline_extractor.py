@@ -1,6 +1,6 @@
 # Module use to extract feature of whole image database 
 from PIL import Image
-from feature_extractor import FeatureExtractor
+from service import FeatureExtractor
 from pathlib import Path
 import numpy as np
 import time
