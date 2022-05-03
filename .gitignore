@@ -1,0 +1,5 @@
+**/static/feature/*
+**/static/uploaded/*
+**/static/Data/*
+**/__pycache__
+**/.vscode
