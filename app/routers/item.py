@@ -48,8 +48,8 @@ async def post_image(file: UploadFile = File(...)):
         # L2 distances to features
         dists = np.linalg.norm(features - query, axis=1)
 
-        # Top 5 most similar images id
-        ids = np.argsort(dists)[:5]
+        # Top 10 most similar images id
+        ids = np.argsort(dists)[:10]
 
         #  Executed model end time
         end = time.time()
