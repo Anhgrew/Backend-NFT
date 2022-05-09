@@ -2,13 +2,10 @@ from service import get_nft_by_id
 from models import Item
 
 # Get top similar images and retrive more info from NFT market
-def get_model_predicted_results(scores, nft_address_map, market_url):
-
-    list_result_img_path = [str(scores[i][1]).replace("static/", "") for i in range(len(scores))]
-
+def get_model_predicted_results(ids, nft_tokens, market_url):
     responses = []
-    for img_path in list_result_img_path:
-        nft_id = nft_address_map[img_path]
+    for id in ids:
+        nft_id = nft_tokens[id]
         nft_req = get_nft_by_id(market_url, nft_id)
         response = nft_req.json()
         item = Item()
