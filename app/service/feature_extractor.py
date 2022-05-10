@@ -3,46 +3,74 @@ from tensorflow.keras.preprocessing import image
 from numpy.linalg import norm
 import numpy as np
 
-# from tensorflow.keras.applications.vgg16 import VGG16
-# from tensorflow.keras.applications.efficientnet import EfficientNetB4
-# from tensorflow.keras.applications.vgg16 import (
-#     preprocess_input as vgg16_preprocess_input,
-# )
-
-# from tensorflow.keras.applications.resnet50 import (
-#     preprocess_input as effnetb4_preprocess_input,
-# )
+from sklearn.decomposition import PCA
+from sklearn.neighbors import NearestNeighbors
 
 from tensorflow.keras.applications.resnet50 import ResNet50
-from tensorflow.keras.applications.resnet50 import preprocess_input as preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input
 
 
-model = ResNet50(
-    weights="imagenet", include_top=False, input_shape=(224, 224, 3), pooling="max"
-)
+class FeatureExtractor:
+    def __init__(self, vector_features, vector_tokens):
+        self.init_model(vector_features, vector_tokens)
+        self.init_pca()
 
+    def init_model(self, vector_features, vector_tokens):
+        self.model = ResNet50(
+            weights="imagenet",
+            include_top=False,
+            input_shape=(224, 224, 3),
+            pooling="max",
+        )
+        self.vector_features = vector_features
+        self.vector_tokens = vector_tokens
 
-def extract_features(self, img_path=None):
-    """
-    Extract a deep features vector from an input image
+    def init_pca(self,):
+        num_feature_dimensions = 200  # default
+        self.pca = PCA(n_components=num_feature_dimensions)
+        self.pca.fit(self.vector_features)
+        self.neighbors = NearestNeighbors(
+            n_neighbors=20, algorithm="brute", metric="euclidean"
+        ).fit(self.vector_features)
 
-    Parametors
-    ----------
-    img_path : str
-        The path to the image
+    def extract(self, img=None):
+        """
+        Extract a deep feature from an input image
 
-    Returns
-    -------
-    features of an images (np.ndarray): deep feature with the shape=(4096, )
-    """
-    input_shape = (224, 224, 3)
-    img = image.load_img(img_path, target_size=(input_shape[0], input_shape[1]))
-    img_array = image.img_to_array(img)
-    expanded_img_array = np.expand_dims(img_array, axis=0)
-    preprocessed_img = preprocess_input(expanded_img_array)
+        Parameters
+        ----------
+        img: Image
+            from PIL.Image.open(path) or tensorflow.keras.preprocessing.image.load_img(path)
 
-    features = model.predict(preprocessed_img)
-    flattened_features = features.flatten()
-    normalized_features = flattened_features / norm(flattened_features)
+        Returns
+        -------
+        feature: Numpy array(s) of predictions.
+            (np.ndarray) deep feature with the shape=(2048, )
+        """
+        img = img.resize((224, 224))  # VGG must take a 224x224 img as an input
+        img = img.convert("RGB")  # Make sure img is color
+        img_array = image.img_to_array(img)
+        expanded_img_array = np.expand_dims(img_array, axis=0)
+        preprocessed_img = preprocess_input(expanded_img_array)
 
-    return normalized_features
+        features = self.model.predict(preprocessed_img)
+        flattened_features = features.flatten()
+        normalized_features = flattened_features / norm(flattened_features)
+
+        return normalized_features
+
+    def search(self, img=None):
+        """
+        Search a pca features image in the pca features image vector.
+        Args:
+            img: from PIL.Image.open(path) or tensorflow.keras.preprocessing.image.load_img(path)
+        Returns:
+            feature (np.ndarray): deep feature with the shape=(4096, )
+        """
+        input_extract_features = []
+        input_extract_features.append(self.extract(img))
+        input_features_compressed = self.pca.transform(input_extract_features)
+
+        distances, indices = self.neighbors.kneighbors(input_features_compressed)
+        similar_tokens = [self.vectors_tokens[indices[i]] for i in range(0, 20)]
+        return similar_tokens
