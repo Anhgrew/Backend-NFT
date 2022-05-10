@@ -4,7 +4,7 @@ import numpy as np
 from math import dist
 from fastapi import File, UploadFile, APIRouter, HTTPException
 from pathlib import Path
-from service import read_csv_file, handle_uploaded_image, get_model_predicted_results, FeatureExtractor
+from service import read_csv_file, read_pkl_file, handle_uploaded_image, get_model_predicted_results, FeatureExtractor
 
 # Create Fast API route instance 
 router = APIRouter()
@@ -12,21 +12,24 @@ router = APIRouter()
 # Declare Rarible NFT Market api url
 NFT_API_URL = "https://api.rarible.org/v0.1/items"
 
-# Read image paths in csv file
-nft_address_map = read_csv_file("./static/DataAddress.csv")
 
 # Create new feature extractor instance to extract image
 feature_extractor = FeatureExtractor()
 # Declare loaded images array
+feature_pkl_path = 'vector_pca.pkl'
 features = []
 # Declare loaded images path array
+path_pkl_path = 'paths_pca.pkl'
 img_paths = []
+# Declare loaded image token array
+token_pkl_path = 'token_pca.pkl'
+nft_tokens = []
 
 # Read images from extracted folder and load to arrays
-for feature_path in Path("./static/feature").glob("*.npy"):
-    features.append(np.load(feature_path))
-    img_paths.append(Path("./static/Data") / (feature_path.stem + ".png"))
-features = np.array(features)
+## Note: each token, filename, features vector is identified by the order in the array
+features = read_pkl_file(feature_pkl_path)
+img_paths = read_pkl_file(path_pkl_path)
+nft_tokens = read_pkl_file(token_pkl_path)
 
 # POST image api
 @router.post("/api/v1/upload")
@@ -45,8 +48,8 @@ async def post_image(file: UploadFile = File(...)):
         # L2 distances to features
         dists = np.linalg.norm(features - query, axis=1)
 
-        # Top 5 most similar images
-        ids = np.argsort(dists)[:5]
+        # Top 10 most similar images id
+        ids = np.argsort(dists)[:10]
 
         #  Executed model end time
         end = time.time()
@@ -54,10 +57,8 @@ async def post_image(file: UploadFile = File(...)):
         # Calculate and print out executed time
         print(f"Runtime of the searching is {end - start}")
 
-        # Get index of most similar image with folder path
-        scores = [(dists[id], img_paths[id]) for id in ids]
         # Get top similar item from model and return result from NFT market api
-        responses = get_model_predicted_results(scores, nft_address_map, NFT_API_URL)
+        responses = get_model_predicted_results(ids, nft_tokens, NFT_API_URL)
         
     except Exception as exception:
         # Catch error
