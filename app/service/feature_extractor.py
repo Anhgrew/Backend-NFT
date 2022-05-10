@@ -1,32 +1,48 @@
+from pkg_resources import ExtractionError
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
-from tensorflow.keras.models import Model
+from numpy.linalg import norm
 import numpy as np
 
-# See https://keras.io/api/applications/ for details
+# from tensorflow.keras.applications.vgg16 import VGG16
+# from tensorflow.keras.applications.efficientnet import EfficientNetB4
+# from tensorflow.keras.applications.vgg16 import (
+#     preprocess_input as vgg16_preprocess_input,
+# )
+
+# from tensorflow.keras.applications.resnet50 import (
+#     preprocess_input as effnetb4_preprocess_input,
+# )
+
+from tensorflow.keras.applications.resnet50 import ResNet50
+from tensorflow.keras.applications.resnet50 import preprocess_input as preprocess_input
 
 
-class FeatureExtractor:
-    def __init__(self):
-        base_model = VGG16(weights='imagenet')
-        self.model = Model(inputs=base_model.input,
-                           outputs=base_model.get_layer('fc1').output)
+model = ResNet50(
+    weights="imagenet", include_top=False, input_shape=(224, 224, 3), pooling="max"
+)
 
-    def extract(self, img):
-        """
-        Extract a deep feature from an input image
-        Args:
-            img: from PIL.Image.open(path) or tensorflow.keras.preprocessing.image.load_img(path)
 
-        Returns:
-            feature (np.ndarray): deep feature with the shape=(4096, )
-        """
-        img = img.resize((224, 224))  # VGG must take a 224x224 img as an input
-        img = img.convert('RGB')  # Make sure img is color
-        # To np.array. Height x Width x Channel. dtype=float32
-        x = image.img_to_array(img)
-        # (H, W, C)->(1, H, W, C), where the first elem is the number of img
-        x = np.expand_dims(x, axis=0)
-        x = preprocess_input(x)  # Subtracting avg values for each pixel
-        feature = self.model.predict(x)[0]  # (1, 4096) -> (4096, )
-        return feature / np.linalg.norm(feature)  # Normalize
+def extract_features(self, img_path=None):
+    """
+    Extract a deep features vector from an input image
+
+    Parametors
+    ----------
+    img_path : str
+        The path to the image
+
+    Returns
+    -------
+    features of an images (np.ndarray): deep feature with the shape=(4096, )
+    """
+    input_shape = (224, 224, 3)
+    img = image.load_img(img_path, target_size=(input_shape[0], input_shape[1]))
+    img_array = image.img_to_array(img)
+    expanded_img_array = np.expand_dims(img_array, axis=0)
+    preprocessed_img = preprocess_input(expanded_img_array)
+
+    features = model.predict(preprocessed_img)
+    flattened_features = features.flatten()
+    normalized_features = flattened_features / norm(flattened_features)
+
+    return normalized_features
