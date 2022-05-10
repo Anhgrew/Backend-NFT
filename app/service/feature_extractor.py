@@ -12,25 +12,25 @@ from tensorflow.keras.applications.resnet50 import preprocess_input
 
 class FeatureExtractor:
     def __init__(self, vector_features, vector_tokens):
-        self.init_model(vector_features, vector_tokens)
+        self.vector_features = vector_features
+        self.vector_tokens = vector_tokens
+        self.init_model()
         self.init_pca()
 
-    def init_model(self, vector_features, vector_tokens):
+    def init_model(self):
         self.model = ResNet50(
             weights="imagenet",
             include_top=False,
             input_shape=(224, 224, 3),
             pooling="max",
         )
-        self.vector_features = vector_features
-        self.vector_tokens = vector_tokens
 
     def init_pca(self,):
         num_feature_dimensions = 200  # default
         self.pca = PCA(n_components=num_feature_dimensions)
         self.pca.fit(self.vector_features)
         self.neighbors = NearestNeighbors(
-            n_neighbors=20, algorithm="brute", metric="euclidean"
+            n_neighbors=10, algorithm="brute", metric="euclidean"
         ).fit(self.vector_features)
 
     def extract(self, img=None):
@@ -62,15 +62,23 @@ class FeatureExtractor:
     def search(self, img=None):
         """
         Search a pca features image in the pca features image vector.
-        Args:
-            img: from PIL.Image.open(path) or tensorflow.keras.preprocessing.image.load_img(path)
-        Returns:
-            feature (np.ndarray): deep feature with the shape=(4096, )
+
+        Parameters
+        ----------
+        img: Image
+            from PIL.Image.open(path) or tensorflow.keras.preprocessing.image.load_img(path)
+
+        Returns
+        -------
+        list_token_id: array
+            returns a list of tokens and ids of the similar images.
         """
         input_extract_features = []
+        # extract features from image into 2048-dimension vector
         input_extract_features.append(self.extract(img))
+        # transform the extract features down to 200pc
         input_features_compressed = self.pca.transform(input_extract_features)
 
         distances, indices = self.neighbors.kneighbors(input_features_compressed)
-        similar_tokens = [self.vectors_tokens[indices[i]] for i in range(0, 20)]
+        similar_tokens = [self.vector_tokens[indices[i]] for i in range(0, 10)]
         return similar_tokens
