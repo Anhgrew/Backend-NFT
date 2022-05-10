@@ -28,6 +28,12 @@ img_paths = []
 # Create new feature extractor instance to extract image
 feature_extractor = FeatureExtractor()
 
+# Read images from extracted folder and load to arrays
+for feature_path in Path("./static/feature").glob("*.npy"):
+    features.append(np.load(feature_path))
+    img_paths.append(Path("./static/Data") / (feature_path.stem + ".png"))
+features = np.array(features)
+
 # POST image api
 @router.post("/api/v1/upload")
 async def post_image(file: UploadFile = File(...)):
