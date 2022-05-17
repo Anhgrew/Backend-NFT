@@ -1,5 +1,6 @@
-# Module use to extract feature of whole image database 
+# Module use to extract feature of whole image database
 from PIL import Image
+from tqdm import tqdm, tqdm_notebook
 from service import FeatureExtractor
 from pathlib import Path
 import numpy as np

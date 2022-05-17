@@ -11,7 +11,10 @@ from service import (
     get_model_predicted_results,
     FeatureExtractor,
 )
+from dotenv import load_dotenv
+from os import environ as ENV
 
+load_dotenv()
 
 # Create Fast API route instance
 router = APIRouter()
@@ -20,22 +23,32 @@ router = APIRouter()
 NFT_API_URL = "https://api.rarible.org/v0.1/items"
 
 
-# Declare loaded images array
-feature_pkl_path = "vector_pca.pkl"
-features = []
+# Declare loaded full-features array
+full_features_path = ENV.get("FEATURES_FULL_PATH")
+
+# Declare loaded pca-features array
+pca_features_path = ENV.get("FEATURES_PCA_PATH")
 
 # Declare loaded image token array
-token_pkl_path = "token_pca.pkl"
-nft_tokens = []
+tokens_path = ENV.get("TOKEN_PATH")
+
+num_of_result = int(ENV.get("NUM_OF_RESULT"))
+
 
 # Create new feature extractor instance to extract image
 
 # Read images from extracted folder and load to arrays
 ## Note: each token, filename, features vector is identified by the order in the array
-features = read_pkl_file(feature_pkl_path)
-nft_tokens = read_pkl_file(token_pkl_path)
+full_features = read_pkl_file(full_features_path)
+pca_features = read_pkl_file(pca_features_path)
+tokens = read_pkl_file(tokens_path)
 
-feature_extractor = FeatureExtractor(features, nft_tokens)
+feature_extractor = FeatureExtractor(
+    vector_features_full=full_features,
+    vector_features_pca=pca_features,
+    vector_tokens=tokens,
+    num_of_return=num_of_result,
+)
 
 
 # POST image api
