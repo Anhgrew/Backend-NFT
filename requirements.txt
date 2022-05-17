@@ -6,3 +6,4 @@ numpy==1.22.3
 python-multipart==0.0.5
 scikit-learn
 tqdm
+python-dotenv
