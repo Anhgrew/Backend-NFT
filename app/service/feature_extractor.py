@@ -34,7 +34,7 @@ class FeatureExtractor:
             n_neighbors=self.num_of_return, algorithm="brute", metric="euclidean"
         ).fit(self.vector_features_pca)
 
-    def extract(self, img=None):
+    def extract(self, img_path=None):
         """
         Extract a deep feature from an input image
 
@@ -48,8 +48,8 @@ class FeatureExtractor:
         feature: Numpy array(s) of predictions.
             (np.ndarray) deep feature with the shape=(2048, )
         """
-        img = image.resize((224, 224))  # VGG must take a 224x224 img as an input
-        img = image.convert("RGB")  # Make sure img is color
+        input_shape = (224, 224, 3)
+        img = image.load_img(img_path, target_size=(input_shape[0], input_shape[1]))
         img_array = image.img_to_array(img)
         expanded_img_array = np.expand_dims(img_array, axis=0)
         preprocessed_img = preprocess_input(expanded_img_array)
@@ -81,7 +81,8 @@ class FeatureExtractor:
         input_features_compressed = self.pca.transform(input_extract_features)
 
         distances, indices = self.neighbors.kneighbors(input_features_compressed)
+        print(indices)
         similar_tokens = [
-            self.vector_tokens[indices[i]] for i in range(0, self.num_of_return)
+            self.vector_tokens[indices[0][i]] for i in range(0, self.num_of_return)
         ]
         return similar_tokens

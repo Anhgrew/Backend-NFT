@@ -12,4 +12,4 @@ def handle_uploaded_image(contents, file):
         + file.filename
     )
     image.save(uploaded_img_path)
-    return image
+    return image, uploaded_img_path

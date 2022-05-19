@@ -58,11 +58,11 @@ async def post_image(file: UploadFile = File(...)):
         # Read content of uploaded image
         contents = await file.read()
         # Handle and save uploaded image
-        image = handle_uploaded_image(contents, file)
+        image, uploaded_image_path = handle_uploaded_image(contents, file)
         #  Executed model start time
         start = time.time()
 
-        result = feature_extractor.search(image)
+        result = feature_extractor.search(uploaded_image_path)
 
         #  Executed model end time
         end = time.time()
