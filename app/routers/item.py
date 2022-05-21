@@ -72,7 +72,10 @@ async def post_image(file: UploadFile = File(...)):
 
         # Get top similar item from model and return result from NFT market api
 
+        start = time.time()
         responses = get_model_predicted_results(result, NFT_API_URL)
+        end = time.time()
+        print(f"Runtime of the retrieve is {end - start}")
 
     except Exception as exception:
         # Catch error
