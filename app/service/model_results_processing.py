@@ -36,10 +36,16 @@ def get_model_predicted_results(nft_tokens, market_url):
                 item.meta_content_url = response["meta"]["content"][0]["url"]
             else:
                 item.meta_content_url = "?"
-        if response.get("lastSale") is not None:
-            item.lastsale_price = response["lastSale"]["price"]
-        else:
-            item.lastsale_price = "0"
+
+        item.lastsale_price = "-1"
+
+        if response.get("bestSellOrder") is not None:
+            _response = response["bestSellOrder"]
+            if _response.get("take") is not None:
+                _response = response["bestSellOrder"]["take"]
+                if _response.get("value") is not None:
+                    _response = response["bestSellOrder"]["take"]["value"]
+                    item.lastsale_price = _response
         responses.append(item)
 
     return responses
