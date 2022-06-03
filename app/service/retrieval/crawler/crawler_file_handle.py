@@ -1,7 +1,6 @@
 import requests
 import os
 import os.path as pth
-import pandas as pd
 import csv
 
 def read_crawler_file(my_path):

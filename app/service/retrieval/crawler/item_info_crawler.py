@@ -1,8 +1,6 @@
 import requests
 import os
 import os.path as pth
-import pandas as pd
-import csv
 
 from service.retrieval.crawler import write_crawler_file, read_crawler_file
 

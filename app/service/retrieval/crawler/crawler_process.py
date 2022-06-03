@@ -1,10 +1,9 @@
 import requests
 import os
 import os.path as pth
-import pandas as pd
 import csv
 
-from service.retrieval.crawler import get_collection_id, update_collection_id, get_collection_info, write_crawler_file, read_crawler_file
+from service.retrieval.crawler import get_collection_id, update_collection_id, get_collection_info, write_crawler_file, read_crawler_file, extract_all
 
 #Update storage
 item_storage = '/content/drive/MyDrive/empty/Set/Crawler/Data/'
@@ -20,7 +19,7 @@ def update_collection_info():
 def delete_collection_info():
   collections_list = read_crawler_file(collection_to_delete)
   for collection_id in collections_list.values():
-    if os.exists(item_storage + collection_id):
+    if pth.exists(item_storage + collection_id):
       os.remove(item_storage + collection_id)
 
 def update_record():
@@ -35,3 +34,4 @@ def crawl():
   update_collection_info()
   delete_collection_info()
   update_record()
+  extract_all()
