@@ -4,6 +4,7 @@ import numpy as np
 from math import dist
 from fastapi import File, UploadFile, APIRouter, HTTPException
 from pathlib import Path
+from service.retrieval.crawler.crawler_process import crawl
 from service import (
     read_csv_file,
     read_pkl_file,
@@ -82,3 +83,11 @@ async def post_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=404, detail=exception)
     finally:
         return {"result": responses}
+
+
+@router.get("/api/v1/crawl")
+async def get_collection():
+    try:
+        crawl()
+    except Exception as exception:
+        raise HTTPException(status_code=404, detail=exception)
