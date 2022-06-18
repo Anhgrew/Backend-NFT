@@ -4,12 +4,10 @@ import os.path as pth
 import PIL
 from io import BytesIO
 from service.feature_extractor import FeatureExtractor
-
 from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
 )
-
 from dotenv import load_dotenv
 from os import environ as ENV
 
@@ -21,7 +19,7 @@ extractor = FeatureExtractor()
 
 def extract_by_link(img_url):
     img_data = requests.get(img_url, stream=True)
-    img_pic = PIL.Image.open(img_data.raw)
+    img_pic = PIL.Image.open(img_data.raw).convert("RGB")
     vector_feature_extracted = extractor.extract(img=img_pic)
     return vector_feature_extracted
 

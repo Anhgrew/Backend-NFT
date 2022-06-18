@@ -54,7 +54,6 @@ class FeatureExtractor:
         feature: Numpy array(s) of predictions.
             (np.ndarray) deep feature with the shape=(2048, )
         """
-        print(img.shape())
         input_shape = (224, 224, 3)
         target_size = (input_shape[0], input_shape[1])
         if img == None:
@@ -62,6 +61,8 @@ class FeatureExtractor:
         else:
             img = img.resize(target_size)
         img_array = image.img_to_array(img)
+        print("Image Shape: ")
+        print(img_array.shape)
         expanded_img_array = np.expand_dims(img_array, axis=0)
         preprocessed_img = preprocess_input(expanded_img_array)
 
