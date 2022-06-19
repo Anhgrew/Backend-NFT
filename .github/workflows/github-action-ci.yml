@@ -3,7 +3,6 @@ name: Docker Build And Publish
 on:
   push:
     branches: [ "master" ]
-
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
@@ -38,13 +37,10 @@ jobs:
       
       - name: Docker Meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v4.0.1
         with:
-          images: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/test-repo
-            
-          tags: |
-            type=semver,pattern=v{{major}}
+          images: anhgrew/test-repo
+          tags: type=semver,pattern=v{{major}}
  
       - name: Cache Docker Image Layers
         uses: actions/cache@v2
