@@ -32,11 +32,11 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
   
       - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2.0.0
         id: buildx
-        uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
  
       - name: Cache Docker Image Layers
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -46,14 +46,15 @@ jobs:
       - name: Build And Push Docker Image
         uses: docker/build-push-action@v3
         id: docker_build
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
+        with:       
           context: .
           file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
           push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}/v${{ github.run_number }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          tags: anhgrew/test-repo/v${{ github.run_number }}
+          
           
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
