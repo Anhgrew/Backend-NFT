@@ -53,7 +53,7 @@ jobs:
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}/v${{ github.run_number }}
+          tags: anhgrew/${{ env.IMAGE_NAME }}/v${{ github.run_number }}
           
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
