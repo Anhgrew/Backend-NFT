@@ -40,8 +40,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKER_HUB_USERNAME }}/test-repo
-          tags: type=semver,pattern={{major}}
+          images: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/test-repo
+            
+          tags: |
+            type=semver,pattern=v{{major}}
  
       - name: Cache Docker Image Layers
         uses: actions/cache@v2
