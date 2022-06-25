@@ -41,17 +41,9 @@ def update_record():
 
 
 def crawl():
-    print("STAGE START")
-    print("stage 1")
     get_collections_id()
-    print("stage 2")
     update_collection_id()
-    print("stage 3")
     update_collection_info()
-    print("stage 4")
     delete_collection_info()
-    print("stage 5")
     update_record()
-    print("stage 6")
     extract_all()
-    print("STAGE END")
