@@ -1,10 +1,13 @@
-import requests
+import pickle
 import os
 import os.path as pth
 import csv
 
 
 def read_crawler_file(my_path):
+    """
+        Read data from csv file into dictionary.
+    """
     if not pth.exists(my_path):
         my_file = open(my_path, "w+")
         my_file.close()
@@ -24,3 +27,7 @@ def write_crawler_file(my_path, my_data):
         writer = csv.writer(csv_file)
         for key, value in my_data.items():
             writer.writerow([key, value])
+
+
+def write_pickle_file(path, data):
+    pickle.dump(data, open(path, "wb"))

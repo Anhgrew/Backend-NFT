@@ -4,6 +4,8 @@ import numpy as np
 from math import dist
 from fastapi import File, UploadFile, APIRouter, HTTPException
 from pathlib import Path
+
+from sklearn import feature_extraction
 from service.retrieval.crawler.crawler_process import crawl
 from service import (
     read_csv_file,
@@ -43,13 +45,13 @@ num_of_result = int(ENV.get("NUM_OF_RESULT"))
 full_features = read_pkl_file(full_features_path)
 pca_features = read_pkl_file(pca_features_path)
 tokens = read_pkl_file(tokens_path)
-
-feature_extractor = FeatureExtractor(
-    vector_features_full=full_features,
-    vector_features_pca=pca_features,
-    vector_tokens=tokens,
-    num_of_return=num_of_result,
-)
+feature_extractor = {}
+# feature_extractor = FeatureExtractor(
+#     vector_features_full=full_features,
+#     vector_features_pca=pca_features,
+#     vector_tokens=tokens,
+#     num_of_return=num_of_result,
+# )
 
 
 # POST image api
@@ -85,9 +87,9 @@ async def post_image(file: UploadFile = File(...)):
         return {"result": responses}
 
 
-@router.get("/api/v1/crawl")
-async def get_collection():
+@router.get("/api/v1/crawl/amount/{num_of_collections}")
+async def get_collection(num_of_collections: int):
     try:
-        crawl()
+        crawl(num_of_collections)
     except Exception as exception:
         raise HTTPException(status_code=404, detail=exception)

@@ -61,8 +61,6 @@ class FeatureExtractor:
         else:
             img = img.resize(target_size)
         img_array = image.img_to_array(img)
-        print("Image Shape: ")
-        print(img_array.shape)
         expanded_img_array = np.expand_dims(img_array, axis=0)
         preprocessed_img = preprocess_input(expanded_img_array)
 

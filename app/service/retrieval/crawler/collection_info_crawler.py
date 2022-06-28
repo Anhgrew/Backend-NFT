@@ -1,4 +1,5 @@
 import requests
+from service.retrieval.crawler.url_modify import UrlModify
 from dotenv import load_dotenv
 from os import environ as ENV
 
@@ -10,29 +11,39 @@ from service.retrieval.crawler.crawler_file_handle import (
 
 
 # Get collections ID
-collection_api = ENV["COLLECTION_API"]
-collection_storage = ENV.get("COLLECTION_STORAGE")
-collection_to_update = ENV.get("COLLECTION_TO_UPDATE")
-collection_to_delete = ENV.get("COLLECTION_TO_DELETE")
+COLLECTION_API = ENV["TOP_COLLECTION_API"]
+COLLECTIONS_STORAGE = ENV.get("COLLECTIONS_STORAGE")
+COLLECTIONS_TO_UPDATE = ENV.get("COLLECTIONS_TO_UPDATE")
 
-collections_id = {}
+collections_id = dict()
 
 
-def get_collections_id():
-    collection_request = requests.get(collection_api)
+def get_collections_id(num_of_collections):
+    """
+        get collection the most famous list from COLLECTION_API
+    """
+    collection_downloaded = read_crawler_file(COLLECTIONS_STORAGE)
+    downloaded_list = list(collection_downloaded.values())
+
+    num_of_downloaded = int(len(collection_downloaded))
+    num_of_get = num_of_downloaded + int(num_of_collections)
+    url = UrlModify(top=num_of_get).get_url()
+
+    collection_request = requests.get(url)
     collection_raw = collection_request.json()
-    for id, collection_item in enumerate(collection_raw):
-        collections_id[str(id)] = collection_item["id"]
+
+    set_collections = set()
+
+    for _, collection_item in enumerate(collection_raw):
+        set_collections.add(collection_item["id"])
+
+    pending_list = list(set_collections)
+    pending_list = [item for item in pending_list if item not in downloaded_list]
+    pending_list = pending_list[:num_of_collections]
+
+    for i, item in enumerate(pending_list):
+        collections_id[str(i)] = item
 
 
-def update_collection_id():
-    # load
-    deleting_item = {}
-    current_items = read_crawler_file(collection_storage)
-    # process
-    write_crawler_file(collection_to_update, collections_id)
-    for key, item in current_items.items():
-        if not item in collections_id.values():
-            deleting_item[key] = item
-    print(len(deleting_item))
-    write_crawler_file(collection_to_delete, deleting_item)
+def update_collections_id():
+    write_crawler_file(COLLECTIONS_TO_UPDATE, collections_id)
