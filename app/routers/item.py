@@ -46,12 +46,12 @@ full_features = read_pkl_file(full_features_path)
 pca_features = read_pkl_file(pca_features_path)
 tokens = read_pkl_file(tokens_path)
 feature_extractor = {}
-# feature_extractor = FeatureExtractor(
-#     vector_features_full=full_features,
-#     vector_features_pca=pca_features,
-#     vector_tokens=tokens,
-#     num_of_return=num_of_result,
-# )
+feature_extractor = FeatureExtractor(
+    vector_features_full=full_features,
+    vector_features_pca=pca_features,
+    vector_tokens=tokens,
+    num_of_return=num_of_result,
+)
 
 
 # POST image api

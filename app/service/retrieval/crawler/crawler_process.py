@@ -34,14 +34,14 @@ def update_record():
 
 
 def crawl(num_of_collections):
-    print("stage 1")
+    # print("stage 1")
     get_collections_id(num_of_collections)
-    print("stage 2")
+    # print("stage 2")
     update_collections_id()
-    print("stage 3")
+    # print("stage 3")
     update_collection_info()
-    print("stage 4")
+    # print("stage 4")
     update_record()
-    print("stage 5")
+    # print("stage 5")
     extract_all()
-    print("end")
+    # print("end")
