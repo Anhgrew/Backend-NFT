@@ -8,4 +8,5 @@ class Item():
     meta_name: Optional[str]
     meta_description: Optional[str]
     meta_content_url:  Optional[str]
+    price:  Optional[str]
     lastsale_price:  Optional[str]
