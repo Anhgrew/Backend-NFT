@@ -1,6 +1,9 @@
+import pickle
 import requests
 import os
 import os.path as pth
+
+# from app.service.file_handle import append_data_2_pkl_file
 
 from service.retrieval.crawler.collection_info_crawler import *
 from service.retrieval.crawler.item_info_crawler import *
@@ -34,14 +37,8 @@ def update_record():
 
 
 def crawl(num_of_collections):
-    # print("stage 1")
     get_collections_id(num_of_collections)
-    # print("stage 2")
     update_collections_id()
-    # print("stage 3")
     update_collection_info()
-    # print("stage 4")
-    update_record()
-    # print("stage 5")
     extract_all()
-    # print("end")
+    update_record()

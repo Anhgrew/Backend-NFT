@@ -70,8 +70,6 @@ def get_collection_info(token_id):
             if url != "":
                 count += 1
                 address_book[id] = url
-            if count % 100 == 0:
-                print(count)
             if count == MAX_ITEMS:
                 break
 

@@ -2,6 +2,7 @@ import requests
 import os
 import os.path as pth
 import PIL
+import pickle
 from service.feature_extractor import FeatureExtractor
 from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
@@ -14,6 +15,9 @@ from os import environ as ENV
 load_dotenv()
 
 ITEMS_STORAGE = ENV["ITEMS_STORAGE"]
+VECTOR_TOKEN_ID_PKL = ENV["VECTOR_TOKEN_ID_PKL"]
+VECTOR_FEATURES_PKL = ENV["VECTOR_FEATURES_PKL"]
+
 extractor = FeatureExtractor()
 
 
@@ -38,6 +42,8 @@ def extract_collection(collection_id):
     print("write to pickle file")
     write_pickle_file(storage_path + "/key.pkl", list(extracted_result.keys()))
     write_pickle_file(storage_path + "/vectors.pkl", list(extracted_result.values()))
+    pickle.dump(list(extracted_result.keys()), open(VECTOR_TOKEN_ID_PKL, "ab+"))
+    pickle.dump(list(extracted_result.values()), open(VECTOR_FEATURES_PKL, "ab+"))
     print("done")
 
 

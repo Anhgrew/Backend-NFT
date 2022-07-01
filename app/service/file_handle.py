@@ -18,3 +18,8 @@ def read_pkl_file(_path):
     with open(_path, "rb") as f:
         data = pickle.load(f)
     return data
+
+
+def append_data_2_pkl_file(data, path):
+    with open(path, "ab+") as input_file:
+        pickle.dump(data, input_file)
