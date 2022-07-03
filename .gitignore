@@ -1,7 +1,6 @@
 **/static/feature/*
 **/static/uploaded/*
 **/static/Data/*
-**/Crawler/Data/*
 
 **/__pycache__
 **/.vscode
