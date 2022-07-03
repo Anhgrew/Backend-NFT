@@ -7,3 +7,5 @@ python-multipart==0.0.5
 scikit-learn
 tqdm
 python-dotenv
+black
+sqlalchemy

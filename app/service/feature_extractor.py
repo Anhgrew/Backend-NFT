@@ -12,12 +12,12 @@ from tensorflow.keras.applications.resnet50 import preprocess_input
 
 class FeatureExtractor:
     def __init__(
-        self, vector_features_full, vector_features_pca, vector_tokens, num_of_return
+        self,
+        vector_features_full=None,
+        vector_features_pca=None,
+        vector_tokens=None,
+        num_of_return=10,
     ):
-        self.vector_features_full = vector_features_full
-        self.vector_features_pca = vector_features_pca
-        self.vector_tokens = vector_tokens
-
         self.model = ResNet50(
             weights="imagenet",
             include_top=False,
@@ -25,7 +25,13 @@ class FeatureExtractor:
             pooling="max",
         )
 
+        self.vector_features_full = vector_features_full
+        self.vector_features_pca = vector_features_pca
+        self.vector_tokens = vector_tokens
+        if vector_features_full == None:
+            return
         num_feature_dimensions = 200  # default
+
         self.pca = PCA(n_components=num_feature_dimensions)
         self.pca.fit(self.vector_features_full)
         self.num_of_return = num_of_return
@@ -34,7 +40,7 @@ class FeatureExtractor:
             n_neighbors=self.num_of_return, algorithm="brute", metric="euclidean"
         ).fit(self.vector_features_pca)
 
-    def extract(self, img_path=None):
+    def extract(self, img_path=None, img=None):
         """
         Extract a deep feature from an input image
 
@@ -49,7 +55,11 @@ class FeatureExtractor:
             (np.ndarray) deep feature with the shape=(2048, )
         """
         input_shape = (224, 224, 3)
-        img = image.load_img(img_path, target_size=(input_shape[0], input_shape[1]))
+        target_size = (input_shape[0], input_shape[1])
+        if img == None:
+            img = image.load_img(path=img_path, target_size=target_size)
+        else:
+            img = img.resize(target_size)
         img_array = image.img_to_array(img)
         expanded_img_array = np.expand_dims(img_array, axis=0)
         preprocessed_img = preprocess_input(expanded_img_array)
