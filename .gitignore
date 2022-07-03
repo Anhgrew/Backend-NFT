@@ -2,7 +2,7 @@
 **/static/uploaded/*
 **/static/Data/*
 **/temp/Crawler/Data/*
-**/temp/Crawler/*.csv
+**/temp/Crawler/**/*.csv
 
 **/__pycache__
 **/.vscode
