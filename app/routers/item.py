@@ -6,10 +6,12 @@ from fastapi import File, UploadFile, APIRouter, HTTPException
 from pathlib import Path
 
 from sklearn import feature_extraction
+from app.service.file_handle import load_pickle_file
 from service.retrieval.crawler.crawler_process import crawl
 from service import (
     read_csv_file,
     read_pkl_file,
+    load_pickle_file,
     handle_uploaded_image,
     get_model_predicted_results,
     FeatureExtractor,
@@ -42,16 +44,16 @@ num_of_result = int(ENV.get("NUM_OF_RESULT"))
 
 # Read images from extracted folder and load to arrays
 ## Note: each token, filename, features vector is identified by the order in the array
-full_features = read_pkl_file(full_features_path)
-pca_features = read_pkl_file(pca_features_path)
-tokens = read_pkl_file(tokens_path)
+full_features = load_pickle_file(full_features_path)
+pca_features = load_pickle_file(pca_features_path)
+tokens = load_pickle_file(tokens_path)
 feature_extractor = {}
-# feature_extractor = FeatureExtractor(
-#     vector_features_full=full_features,
-#     vector_features_pca=pca_features,
-#     vector_tokens=tokens,
-#     num_of_return=num_of_result,
-# )
+feature_extractor = FeatureExtractor(
+    vector_features_full=full_features,
+    vector_features_pca=pca_features,
+    vector_tokens=tokens,
+    num_of_return=num_of_result,
+)
 
 
 # POST image api

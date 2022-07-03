@@ -23,3 +23,12 @@ def read_pkl_file(_path):
 def append_data_2_pkl_file(data, path):
     with open(path, "ab+") as input_file:
         pickle.dump(data, input_file)
+
+
+def load_pickle_file(path):
+    res = list()
+    try:
+        res.extend(pickle.load(open(path, "rb")))
+    except EOFError:
+        pass
+    return res
