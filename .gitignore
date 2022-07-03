@@ -1,6 +1,7 @@
 **/static/feature/*
 **/static/uploaded/*
 **/static/Data/*
+**/temp/Crawler/*
 **/__pycache__
 **/.vscode
 **/*.pem
