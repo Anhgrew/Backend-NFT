@@ -6,7 +6,7 @@ from fastapi import File, UploadFile, APIRouter, HTTPException
 from pathlib import Path
 
 from sklearn import feature_extraction
-from app.service.file_handle import load_pickle_file
+# from service.file_handle import load_pickle_file
 from service.retrieval.crawler.crawler_process import crawl
 from service import (
     read_csv_file,
