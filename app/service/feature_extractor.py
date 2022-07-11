@@ -40,7 +40,7 @@ class FeatureExtractor:
             n_neighbors=self.num_of_return, algorithm="brute", metric="euclidean"
         ).fit(self.vector_features_pca)
 
-    def extract(self, img_path=None, img=None):
+    def extract(self, img=None, img_path=None):
         """
         Extract a deep feature from an input image
 
@@ -70,7 +70,7 @@ class FeatureExtractor:
 
         return normalized_features
 
-    def search(self, img=None):
+    def search(self, img=None, img_path=None):
         """
         Search a pca features image in the pca features image vector.
 
@@ -86,7 +86,7 @@ class FeatureExtractor:
         """
         input_extract_features = []
         # extract features from image into 2048-dimension vector
-        input_extract_features.append(self.extract(img))
+        input_extract_features.append(self.extract(img=img, img_path=img_path))
         # transform the extract features down to 200pc
         input_features_compressed = self.pca.transform(input_extract_features)
 

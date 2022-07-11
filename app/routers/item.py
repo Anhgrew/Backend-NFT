@@ -1,10 +1,11 @@
 import time
 import numpy as np
-
+from starlette.requests import Request
 from math import dist
-from fastapi import File, UploadFile, APIRouter, HTTPException
+from fastapi import File, UploadFile, APIRouter, HTTPException, Depends
 from pathlib import Path
-
+import io
+from PIL import Image
 from sklearn import feature_extraction
 from service.file_handle import load_pickle_file
 from service.retrieval.crawler.crawler_process import crawl
@@ -15,6 +16,7 @@ from service import (
     get_model_predicted_results,
     FeatureExtractor,
 )
+from pydantic import BaseModel
 from dotenv import load_dotenv
 from os import environ as ENV
 
@@ -66,7 +68,43 @@ async def post_image(file: UploadFile = File(...)):
         #  Executed model start time
         start = time.time()
 
-        result = feature_extractor.search(uploaded_image_path)
+        result = feature_extractor.search(img_path=uploaded_image_path)
+
+        #  Executed model end time
+        end = time.time()
+
+        # Calculate and print out executed time
+        print(f"Runtime of the searching is {end - start}")
+
+        # Get top similar item from model and return result from NFT market api
+
+        start = time.time()
+        responses = get_model_predicted_results(result, NFT_API_URL)
+        end = time.time()
+        print(f"Runtime of the retrieve is {end - start}")
+
+    except Exception as exception:
+        # Catch error
+        raise HTTPException(status_code=404, detail=exception)
+    finally:
+        return {"result": responses}
+
+
+async def parse_body(request: Request):
+    data: bytes = await request.body()
+    return data
+
+
+@router.post("/api/v2/upload")
+async def post_image(data: bytes = Depends(parse_body)):
+    try:
+        # Read content of uploaded image
+        img_search = Image.open(io.BytesIO(data))
+
+        #  Executed model start time
+        start = time.time()
+
+        result = feature_extractor.search(img=img_search)
 
         #  Executed model end time
         end = time.time()

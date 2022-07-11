@@ -8,4 +8,4 @@ scikit-learn
 tqdm
 python-dotenv
 black
-sqlalchemy
+
