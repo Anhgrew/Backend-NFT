@@ -46,12 +46,12 @@ num_of_result = int(ENV.get("NUM_OF_RESULT"))
 # Read images from extracted folder and load to arrays
 ## Note: each token, filename, features vector is identified by the order in the array
 full_features = load_pickle_file(full_features_path)
-pca_features = load_pickle_file(pca_features_path)
+# pca_features = load_pickle_file(pca_features_path)
 tokens = load_pickle_file(tokens_path)
 feature_extractor = {}
 feature_extractor = FeatureExtractor(
     vector_features_full=full_features,
-    vector_features_pca=pca_features,
+    # vector_features_pca=pca_features,
     vector_tokens=tokens,
     num_of_return=num_of_result,
 )

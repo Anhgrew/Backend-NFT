@@ -14,7 +14,7 @@ class FeatureExtractor:
     def __init__(
         self,
         vector_features_full=None,
-        vector_features_pca=None,
+        # vector_features_pca=None,
         vector_tokens=None,
         num_of_return=10,
     ):
@@ -26,7 +26,7 @@ class FeatureExtractor:
         )
 
         self.vector_features_full = vector_features_full
-        self.vector_features_pca = vector_features_pca
+        # self.vector_features_pca = vector_features_pca
         self.vector_tokens = vector_tokens
         if vector_features_full == None:
             return
@@ -34,6 +34,7 @@ class FeatureExtractor:
 
         self.pca = PCA(n_components=num_feature_dimensions)
         self.pca.fit(self.vector_features_full)
+        self.vector_features_pca = self.pca.transform(self.vector_features_full)
         self.num_of_return = num_of_return
 
         self.neighbors = NearestNeighbors(
