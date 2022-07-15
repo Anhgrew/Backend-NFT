@@ -8,7 +8,6 @@ from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
     write_pickle_file,
-    append_crawler_file,
 )
 from dotenv import load_dotenv
 from os import environ as ENV
@@ -20,6 +19,7 @@ ITEMS_STORAGE = ENV["ITEMS_STORAGE"]
 VECTOR_TOKEN_ID_PKL = ENV["TOKEN_PATH"]
 #VECTOR_FEATURES_PKL = ENV["VECTOR_FEATURES_PKL"]
 VECTOR_FEATURES_PKL = ENV["FEATURES_FULL_PATH"]
+COLLECTIONS_TO_UPDATE = ENV["COLLECTIONS_TO_UPDATE"]
 
 extractor = FeatureExtractor()
 
