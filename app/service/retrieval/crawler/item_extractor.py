@@ -8,6 +8,7 @@ from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
     write_pickle_file,
+    append_crawler_file,
 )
 from dotenv import load_dotenv
 from os import environ as ENV
@@ -29,7 +30,7 @@ def extract_by_link(img_url):
 
 
 def extract_collection(collection_id):
-    storage_path = ITEMS_STORAGE + "/" + collection_id
+    storage_path = ITEMS_STORAGE + collection_id
     if pth.exists(storage_path + "/data.csv"):
         return
     if not pth.exists(storage_path + "/address_book.csv"):
@@ -48,5 +49,6 @@ def extract_collection(collection_id):
 
 
 def extract_all():
-    for path_id in os.listdir(ITEMS_STORAGE):
-        extract_collection(path_id)
+    collections_list = read_crawler_file(COLLECTIONS_TO_UPDATE)
+    for collection_id in collections_list.values():
+        extract_collection(collection_id)

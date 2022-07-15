@@ -7,6 +7,7 @@ load_dotenv()
 from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
+    append_crawler_file,
 )
 
 
@@ -47,3 +48,4 @@ def get_collections_id(num_of_collections):
 
 def update_collections_id():
     write_crawler_file(COLLECTIONS_TO_UPDATE, collections_id)
+    collections_id = dict()

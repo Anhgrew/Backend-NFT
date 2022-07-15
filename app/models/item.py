@@ -10,3 +10,5 @@ class Item():
     meta_content_url:  Optional[str]
     price:  Optional[str]
     lastsale_price:  Optional[str]
+    attributes: Optional[str]
+    maker: Optional[str]

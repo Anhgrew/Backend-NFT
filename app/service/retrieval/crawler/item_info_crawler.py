@@ -5,6 +5,7 @@ import os.path as pth
 from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
+    append_crawler_file,
 )
 from dotenv import load_dotenv
 from os import environ as ENV
