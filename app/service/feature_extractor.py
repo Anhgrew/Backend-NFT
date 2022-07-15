@@ -31,7 +31,9 @@ class FeatureExtractor:
         if vector_features_full == None:
             return
         num_feature_dimensions = 200  # default
-
+        if num_feature_dimensions > len(vector_features_full):
+            print("Not enough data", len(vector_features_full))
+            return
         self.pca = PCA(n_components=num_feature_dimensions)
         self.pca.fit(self.vector_features_full)
         self.vector_features_pca = self.pca.transform(self.vector_features_full)

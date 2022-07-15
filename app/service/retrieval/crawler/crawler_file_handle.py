@@ -40,4 +40,4 @@ def append_crawler_file(my_path, my_data):
 
 
 def write_pickle_file(path, data):
-    pickle.dump(data, open(path, "wb"))
+    pickle.dump(data, open(path, "wb+"))
