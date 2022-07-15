@@ -5,31 +5,40 @@
 ### *1. Project folder structure*
 
 ```
+.
 ├── app
-│   ├── __init__.py
-│   ├── main.py
-│   ├── models
-│   │   ├── __init__.py
-│   │   └── item.py
-│   ├── routers
-│   │   ├── __init__.py
-│   │   └── item.py
-│   ├── service
-│   │   ├── api_handle.py
-│   │   ├── feature_extractor.py
-│   │   ├── file_handle.py
-│   │   ├── image_upload_handle.py
-│   │   ├── __init__.py
-│   │   ├── model_results_processing.py
-│   │   └── offline_extractor.py
-│   ├── static
-│   │   ├── Data
-│   │   ├── DataAddress.csv
-│   │   ├── feature
-│   │   └── uploaded
-│   └── test_main.http
+│   ├── __init__.py
+│   ├── main.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   └── item.py
+│   ├── offline_extractor.py
+│   ├── routers
+│   │   ├── __init__.py
+│   │   └── item.py
+│   ├── service
+│   │   ├── api_handle.py
+│   │   ├── feature_extractor.py
+│   │   ├── file_handle.py
+│   │   ├── image_upload_handle.py
+│   │   ├── __init__.py
+│   │   ├── model_results_processing.py
+│   │   └── retrieval
+│   │       └── crawler
+│   │           ├── collection_info_crawler.py
+│   │           ├── crawler_file_handle.py
+│   │           ├── crawler_process.py
+│   │           ├── item_extractor.py
+│   │           ├── item_info_crawler.py
+│   │           └── url_modify.py
+│   ├── static
+│   │   ├── Data   
+│   │   ├── DataAddress.csv
+│   │   └── uploaded
+│   └── test_main.http
+├── auto_scrawl.sh
 ├── Dockerfile
-├── requirements.txt
+└── requirements.txt
 ```
 
 ### *2. Prerequisite*

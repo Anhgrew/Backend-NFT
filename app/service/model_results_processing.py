@@ -36,8 +36,18 @@ def get_model_predicted_results(nft_tokens, market_url):
                 item.meta_content_url = response["meta"]["content"][0]["url"]
             else:
                 item.meta_content_url = "?"
+            if "attributes" in sub_response:
+                item.attributes = response["meta"]["attributes"]
+            else:
+                item.attributes = "?"
+        else:
+            item.meta_name = "?"
+            item.meta_description = "?"
+            item.meta_content_url = "?"
+            item.attributes = "?"
 
         item.price = "-1"
+        item.maker = "?"
 
         if response.get("bestSellOrder") is not None:
             _response = response["bestSellOrder"]
@@ -46,7 +56,11 @@ def get_model_predicted_results(nft_tokens, market_url):
                 if _response.get("value") is not None:
                     _response = response["bestSellOrder"]["take"]["value"]
                     item.price = _response
-                    
+            _response = response["bestSellOrder"]
+            if _response.get("maker") is not None:
+                _response = response["bestSellOrder"]["maker"]
+                item.maker = _response
+
         item.lastsale_price = "-1"
         
         if response.get("lastSale") is not None:
