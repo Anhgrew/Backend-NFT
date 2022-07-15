@@ -12,3 +12,4 @@ class Item():
     lastsale_price:  Optional[str]
     attributes: Optional[str]
     maker: Optional[str]
+

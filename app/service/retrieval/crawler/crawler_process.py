@@ -32,7 +32,7 @@ def update_collection_info():
 
 def update_record():
     update_list = read_crawler_file(COLLECTIONS_TO_UPDATE)
-    write_crawler_file(COLLECTIONS_STORAGE, update_list)
+    append_crawler_file(COLLECTIONS_STORAGE, update_list)
     write_crawler_file(COLLECTIONS_TO_UPDATE, {})
 
 
