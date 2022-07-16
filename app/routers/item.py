@@ -100,8 +100,9 @@ async def post_image(data: bytes = Depends(parse_body)):
     try:
         # Read content of uploaded image
         img_search = Image.open(io.BytesIO(data))
+
         # replace alpha channel with white color
-        print("CCCC", img_search)
+        img_search.load()
         img_search = Image.new('RGB', img_search.size, (255, 255, 255))
         img_search.paste(img_search, None)
         #  Executed model start time
