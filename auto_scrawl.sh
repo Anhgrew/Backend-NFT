@@ -1,17 +1,18 @@
 #! /bin/bash -x
 
-MAX_ITEMS=2
+MAX_ITEMS=2000
 SERVER="backend-api"
-
-URL="http://13.215.156.162:9090/api/v1/crawl/amount"
-
+URL="http://nft-model-api.nft.nguyenanhdevops.live/api/v1/crawl/amount"
 response=$(curl -s -w "%{http_code}" $URL/$MAX_ITEMS)
 
-http_code=$(tail -n1 <<<"$response") # get the last line
+http_code=$(echo "$response" | tail -n1 ) # get the last line
+
 
 status_code=$(echo -n "$http_code" | grep -o -E '[0-9]+')
 
-if [[ "${status_code}" == 20* ]]
+echo $status_code
+
+if [ "${status_code}" -eq "200" ]
 then
     echo "Craw successfully with status code ${status_code} !!!"
     sleep 10
@@ -21,5 +22,5 @@ then
     echo ">>>> Crawling data successfully <<<<"
 else
     echo "Craw failed with status code ${status_code} !!!"
-fi
+fi  
 
