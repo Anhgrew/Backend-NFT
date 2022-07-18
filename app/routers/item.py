@@ -59,16 +59,19 @@ feature_extractor = FeatureExtractor(
 
 # POST image api
 @router.post("/api/v1/upload")
-async def post_image(file: UploadFile = File(...)):
+async def upload_image(data: bytes = File(...)):
     try:
         # Read content of uploaded image
-        contents = await file.read()
-        # Handle and save uploaded image
-        image, uploaded_image_path = handle_uploaded_image(contents, file)
+        img_search = Image.open(io.BytesIO(data))
+
+        # replace alpha channel with white color
+        img_search.load()
+        img_search = Image.new('RGB', img_search.size, (255, 255, 255))
+        img_search.paste(img_search, None)
         #  Executed model start time
         start = time.time()
 
-        result = feature_extractor.search(img_path=uploaded_image_path)
+        result = feature_extractor.search(img=img_search)
 
         #  Executed model end time
         end = time.time()
