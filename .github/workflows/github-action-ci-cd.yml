@@ -58,4 +58,16 @@ jobs:
           
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
+      
+      - name: multiple command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            hostname
+            docker rm -f backend-api
+            docker run --name backend-api  --restart=always -v /tmp/static:/app/static/ -v /tmp/CrawlData:/app/temp/Crawler/ -p 80:9090 -d ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:v${{ github.run_number }}
         
