@@ -16,7 +16,7 @@ from service import (
     get_model_predicted_results,
     FeatureExtractor,
 )
-from pydantic import BaseModel
+from core.config import settings
 from dotenv import load_dotenv
 from os import environ as ENV
 
@@ -30,30 +30,27 @@ NFT_API_URL = "https://api.rarible.org/v0.1/items"
 
 
 # Declare loaded full-features array
-full_features_path = ENV.get("FEATURES_FULL_PATH")
-
-# Declare loaded pca-features array
-pca_features_path = ENV.get("FEATURES_PCA_PATH")
+FEATURES_PATH = settings.FEATURES_PATH
 
 # Declare loaded image token array
-tokens_path = ENV.get("TOKEN_PATH")
+TOKENS_PATH = settings.TOKENS_PATH
 
-num_of_result = int(ENV.get("NUM_OF_RESULT"))
+NUM_OF_RESULT = settings.NUM_OF_RESULT
 
 
 # Create new feature extractor instance to extract image
 
 # Read images from extracted folder and load to arrays
 ## Note: each token, filename, features vector is identified by the order in the array
-full_features = load_pickle_file(full_features_path)
-# pca_features = load_pickle_file(pca_features_path)
-tokens = load_pickle_file(tokens_path)
+full_features = load_pickle_file(FEATURES_PATH)
+tokens = load_pickle_file(TOKENS_PATH)
+
+
 feature_extractor = {}
 feature_extractor = FeatureExtractor(
     vector_features_full=full_features,
-    # vector_features_pca=pca_features,
     vector_tokens=tokens,
-    num_of_return=num_of_result,
+    num_of_return=NUM_OF_RESULT,
 )
 
 
@@ -62,12 +59,8 @@ feature_extractor = FeatureExtractor(
 async def upload_image(data: bytes = File(...)):
     try:
         # Read content of uploaded image
-        img_search = Image.open(io.BytesIO(data))
+        img_search = Image.open(io.BytesIO(data)).convert("RGB")
 
-        # replace alpha channel with white color
-        img_search.load()
-        img_search = Image.new('RGB', img_search.size, (255, 255, 255))
-        img_search.paste(img_search, None)
         #  Executed model start time
         start = time.time()
 
@@ -102,12 +95,8 @@ async def parse_body(request: Request):
 async def post_image(data: bytes = Depends(parse_body)):
     try:
         # Read content of uploaded image
-        img_search = Image.open(io.BytesIO(data))
+        img_search = Image.open(io.BytesIO(data)).convert("RGB")
 
-        # replace alpha channel with white color
-        img_search.load()
-        img_search = Image.new('RGB', img_search.size, (255, 255, 255))
-        img_search.paste(img_search, None)
         #  Executed model start time
         start = time.time()
 

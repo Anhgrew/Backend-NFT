@@ -1,9 +1,8 @@
 import requests
 from service.retrieval.crawler.url_modify import UrlModify
-from dotenv import load_dotenv
+from core.config import settings
 from os import environ as ENV
 
-load_dotenv()
 from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
@@ -12,9 +11,9 @@ from service.retrieval.crawler.crawler_file_handle import (
 
 
 # Get collections ID
-COLLECTION_API = ENV["TOP_COLLECTION_API"]
-COLLECTIONS_STORAGE = ENV.get("COLLECTIONS_STORAGE")
-COLLECTIONS_TO_UPDATE = ENV.get("COLLECTIONS_TO_UPDATE")
+COLLECTION_API = settings.TOP_COLLECTION_API
+COLLECTIONS_STORAGE = settings.COLLECTIONS_STORAGE
+COLLECTIONS_TO_UPDATE = settings.COLLECTIONS_TO_UPDATE
 
 collections_id = dict()
 

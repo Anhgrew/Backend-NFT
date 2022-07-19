@@ -6,17 +6,16 @@ from service.retrieval.crawler.crawler_file_handle import (
     write_crawler_file,
     read_crawler_file,
 )
-from dotenv import load_dotenv
+from core.config import settings
 from os import environ as ENV
 
-load_dotenv()
 
-ITEMS_API = ENV["ITEMS_API"]
-ITEMS_STORAGE = ENV["ITEMS_STORAGE"]
+ITEMS_API = settings.ITEMS_API
+ITEMS_STORAGE = settings.ITEMS_STORAGE
 CURRENCY = "ETHEREUM:"
-IMAGE_ACCEPTED_TYPES = ENV["IMAGE_ACCEPTED_TYPES"]
+IMAGE_ACCEPTED_TYPES = settings.IMAGE_ACCEPTED_TYPES
 IMAGE_EXTENSION_ACCEPTED = [".jpg", ".jpeg", ".png"]
-MAX_ITEMS = int(ENV["MAX_ITEMS"])
+MAX_ITEMS = int(settings.MAX_ITEMS)
 
 
 def extract_item_info(item_json):
