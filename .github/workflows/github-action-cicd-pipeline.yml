@@ -1,4 +1,4 @@
-name: Docker Build And Publish
+name: Docker Publish Image And Deploy To Cloud
 
 on:
   push:
@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-
+    name: Build And Publish Docker Images 
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -54,12 +54,22 @@ jobs:
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:v${{ github.run_number }}, ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          
-          
+                    
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
-      
-      - name: multiple command
+  
+  deploy:
+    name: Deploy To Cloud
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Approve For Deployment
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: Anhgrew
+
+      - name: Deploy To Production
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
