@@ -67,6 +67,5 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             hostname
-            docker rm -f backend-api
-            docker run --name backend-api  --restart=always -v /tmp/static:/app/static/ -v /tmp/CrawlData:/app/temp/Crawler/ -p 80:9090 -d ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:v${{ github.run_number }}
-        
+            docker rm -f backend-api && docker run --name backend-api  --restart=always -v /tmp/static:/app/static/ -v /tmp/CrawlData:/app/temp/Crawler/ -p 80:9090 -d ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:v${{ github.run_number }}
+            docker image prune -fa
