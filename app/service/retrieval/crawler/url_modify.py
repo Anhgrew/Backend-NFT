@@ -1,10 +1,9 @@
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
-from dotenv import load_dotenv
+from core.config import settings
 from os import environ as ENV
 
-load_dotenv()
 
-TOP_URL = ENV["TOP_COLLECTION_API"]
+TOP_URL = settings.TOP_COLLECTION_API
 DEFAULT_QUERY = {"blockchains": "ETHEREUM", "days": 1, "size": 4}
 
 

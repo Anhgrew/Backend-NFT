@@ -10,16 +10,12 @@ from service.retrieval.crawler.crawler_file_handle import (
     write_pickle_file,
 )
 from dotenv import load_dotenv
-from os import environ as ENV
+from core.config import settings
 
-load_dotenv()
-
-ITEMS_STORAGE = ENV["ITEMS_STORAGE"]
-#VECTOR_TOKEN_ID_PKL = ENV["VECTOR_TOKEN_ID_PKL"]
-VECTOR_TOKEN_ID_PKL = ENV["TOKEN_PATH"]
-#VECTOR_FEATURES_PKL = ENV["VECTOR_FEATURES_PKL"]
-VECTOR_FEATURES_PKL = ENV["FEATURES_FULL_PATH"]
-COLLECTIONS_TO_UPDATE = ENV["COLLECTIONS_TO_UPDATE"]
+ITEMS_STORAGE = settings.ITEMS_STORAGE
+VECTOR_TOKEN_ID_PKL = settings.TOKENS_PATH
+VECTOR_FEATURES_PKL = settings.FEATURES_PATH
+COLLECTIONS_TO_UPDATE = settings.COLLECTIONS_TO_UPDATE
 
 extractor = FeatureExtractor()
 
