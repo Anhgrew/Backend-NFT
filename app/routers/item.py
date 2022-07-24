@@ -20,6 +20,8 @@ from core.config import settings
 from dotenv import load_dotenv
 from os import environ as ENV
 
+from starlette.concurrency import run_in_threadpool
+
 load_dotenv()
 
 # Create Fast API route instance
@@ -125,6 +127,6 @@ async def post_image(data: bytes = Depends(parse_body)):
 @router.get("/api/v1/crawl/amount/{num_of_collections}")
 async def get_collection(num_of_collections: int):
     try:
-        crawl(num_of_collections)
+        await run_in_threadpool(crawl, num_of_collections)
     except Exception as exception:
         raise HTTPException(status_code=404, detail=exception)
