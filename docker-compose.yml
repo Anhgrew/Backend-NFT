@@ -5,6 +5,7 @@ services:
     stop_grace_period: 3m30s
     ports:
       - "80:9090"
+    pull_policy: always
     volumes:
       - nfs-vol-static:/app/static/
       - nfs-vol-crawl:/app/temp/Crawler/
@@ -24,7 +25,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - SEARCH_API=nft-model-api/api/v2/upload
+      - SEARCH_API=http://143.244.144.81:80/api/v2/upload
     deploy:
       labels: [APP=NFT-USER-API]
       replicas: 2

@@ -1,8 +1,8 @@
 #! /bin/bash -x
 
-MAX_ITEMS=2000
+MAX_ITEMS=2
 SERVER="backend-api"
-URL="http://nft-model-api.nft.nguyenanhdevops.live/api/v1/crawl/amount"
+URL="http://127.0.0.1:9090/api/v1/crawl/amount"
 response=$(curl -s -w "%{http_code}" $URL/$MAX_ITEMS)
 
 http_code=$(echo "$response" | tail -n1 ) # get the last line

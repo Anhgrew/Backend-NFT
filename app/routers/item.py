@@ -128,5 +128,6 @@ async def post_image(data: bytes = Depends(parse_body)):
 async def get_collection(num_of_collections: int):
     try:
         await run_in_threadpool(crawl, num_of_collections)
+        
     except Exception as exception:
         raise HTTPException(status_code=404, detail=exception)
