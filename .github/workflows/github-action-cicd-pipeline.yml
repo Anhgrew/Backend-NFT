@@ -81,7 +81,7 @@ jobs:
             docker image prune -fa
 
   deploy-production:
-    name: Deploy To P Environment
+    name: Deploy To Production Environment
     runs-on: ubuntu-latest
     needs: deploy-staging
     steps:
@@ -90,11 +90,13 @@ jobs:
         with:
           secret: ${{ github.TOKEN }}
           approvers: Anhgrew
+          
 
       - name: Deploy To Production Environment
-        uses: sagebind/docker-swarm-deploy-action@v2
+        uses: kitconcept/docker-stack-deploy@v1.0.0
         with:
-          remote_host: ssh://${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }}
-          ssh_private_key: ${{ secrets.PRODUCTION_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrets.PRODUCTION_PUBLIC_KEY }}
-          args: stack deploy --compose-file docker-compose.yml ${{ secrets.PRODUCTION_CLUSTER }}
+          remote_host: ${{ secrets.REMOTE_HOST }}
+          remote_user: ${{ secrets.REMOTE_USER }}
+          remote_private_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          stack_file: "docker-compose.yml"
+          stack_name:  ${{ secrets.PRODUCTION_CLUSTER }}
