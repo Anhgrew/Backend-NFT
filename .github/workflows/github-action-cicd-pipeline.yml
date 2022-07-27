@@ -58,7 +58,7 @@ jobs:
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
   
-  deploy:
+  deploy-staging:
     name: Deploy To Staging Environment
     runs-on: ubuntu-latest
     needs: build
@@ -79,7 +79,12 @@ jobs:
             hostname
             docker rm -f backend-api && docker run --name backend-api  --restart=always -v /tmp/static:/app/static/ -v /tmp/CrawlData:/app/temp/Crawler/ -p 80:9090 -d ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:v${{ github.run_number }}
             docker image prune -fa
-      
+
+  deploy-production:
+    name: Deploy To P Environment
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    steps:
       - name: Approve For Production Deployment
         uses: trstringer/manual-approval@v1
         with:
