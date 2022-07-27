@@ -1,0 +1,63 @@
+version: "3"
+services:
+  nft-model-api:
+    image: anhgrew/nft-backend-api:latest
+    stop_grace_period: 3m30s
+    ports:
+      - "80:9090"
+    volumes:
+      - nfs-vol-static:/app/static/
+      - nfs-vol-crawl:/app/temp/Crawler/
+    deploy:
+      labels: [APP=NFT-MODEL-API]
+      # placement:
+      #   constraints: [node.role = manager]
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  nft-user-api:
+    image: anhgrew/backend-api-nft:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - SEARCH_API=nft-model-api/api/v2/upload
+    deploy:
+      labels: [APP=NFT-USER-API]
+      replicas: 2
+      # placement:
+      #   constraints: [node.role != manager]
+      update_config:
+        parallelism: 1
+        delay: 180s
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - nft-model-api
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+volumes:
+  nfs-vol-static:
+    driver_opts:
+      type: "nfs"
+      o: "addr=143.244.144.81,nolock,soft,rw"
+      device: ":/tmp/static"
+
+  nfs-vol-crawl:
+    driver_opts:
+      type: "nfs"
+      o: "addr=143.244.144.81,nolock,rw"
+      device: ":/tmp/CrawlData"
