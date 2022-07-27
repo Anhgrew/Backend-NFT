@@ -95,6 +95,9 @@ jobs:
       - name: Deploy To Production Environment
         uses: kitconcept/docker-stack-deploy@v1.0.0
         with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_private_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
