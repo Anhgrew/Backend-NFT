@@ -115,4 +115,5 @@ jobs:
           key: ${{ secrets.REMOTE_PRIVATE_KEY }}
           script: |
             hostname
+            docker service update --force nft-verifier_nft-model-api
             docker stack services ${{ secrets.PRODUCTION_CLUSTER }}
