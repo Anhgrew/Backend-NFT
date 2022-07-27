@@ -90,7 +90,9 @@ jobs:
         with:
           secret: ${{ github.TOKEN }}
           approvers: Anhgrew
-          
+
+      - name: Checkout Github
+        uses: actions/checkout@v2
 
       - name: Deploy To Production Environment
         uses: kitconcept/docker-stack-deploy@v1.0.0
