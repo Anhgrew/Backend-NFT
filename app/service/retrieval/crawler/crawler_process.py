@@ -31,8 +31,13 @@ def update_collection_info():
 
 
 def update_record():
+    storage_list = read_crawler_file(COLLECTIONS_STORAGE)
     update_list = read_crawler_file(COLLECTIONS_TO_UPDATE)
-    append_crawler_file(COLLECTIONS_STORAGE, update_list)
+    final_list = {}
+    for k in update_list.keys():
+        print(k)
+        final_list[str(int(k) + len(storage_list))] = update_list[k]
+    append_crawler_file(COLLECTIONS_STORAGE, final_list)
     write_crawler_file(COLLECTIONS_TO_UPDATE, {})
 
 
