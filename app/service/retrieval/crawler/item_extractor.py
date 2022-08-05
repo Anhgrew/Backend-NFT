@@ -40,7 +40,7 @@ def extract_collection(collection_id):
         extracted_result[key] = extract_by_link(value)
         count = count+1
         print(str(count) + ' items extracted', end = "\r")
-    print(str(count) + ' items extracted', end = "\r")
+    print(str(count) + ' items extracted')
 
     write_pickle_file(storage_path + "/key.pkl", list(extracted_result.keys()))
     write_pickle_file(storage_path + "/vectors.pkl", list(extracted_result.values()))
