@@ -58,26 +58,27 @@
 - [x] Python3 (3.8.10)
 - [x] Pip (22.0.4)
 - [x] Install all necessary python packages:
-
+- [x] Download initial image database from url: https://files.fm/f/bxpquhnmv
 
   `pip install -r requirements.txt`
-- [x] Put all images into the database folder (Data) and run the extract feature:
+- [x] Unzip the static.zip file which is downloaded above and replace the database folder (static) by unzipping static folder that was extracted and run:
+  
 
-  `cd app && python3 offline_extractor.py`
+  `cd app`
 
 ### *3. How to run*
 
 - Run app command:
 
-  `uvicorn  main:app --reload`
+  `uvicorn main:app --reload --port=9090`
 
-- Docker repository: [ NFT-Backend-API-Image ](https://hub.docker.com/r/anhgrew/nft-backend)
+- Docker repository: [ NFT-Backend-API-Image ](https://hub.docker.com/r/anhgrew/nft-backend-api)
 - Open static folder with terminal and use docker command to start local server:
 
-  `docker run --name tmp --restart=always -v $(pwd)/static:/app/static/ -v $(pwd)/static/feature:/app/static/feature  -p 9090:9090 -d anhgrew/nft-backend:V2`
+  `docker run --name nft-backend --restart=always -v $(pwd)/static:/app/static/ -p 9090:9090 -d anhgrew/nft-backend-api:latest`
 
 
-- Local api server link: http://127.0.0.1:8000/docs or http://127.0.0.1:9090/docs (Run with docker command)
+- Local api server link: http://127.0.0.1:9090/docs
 
 
 Run successfully:
