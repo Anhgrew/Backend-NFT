@@ -41,9 +41,11 @@ def get_collections_id(num_of_collections):
     pending_list = [item for item in pending_list if item not in downloaded_list]
     pending_list = pending_list[:num_of_collections]
     for i, item in enumerate(pending_list):
+        print('+ ', item)
         collections_id[str(i)] = item
 
 
 def update_collections_id():
     write_crawler_file(COLLECTIONS_TO_UPDATE, collections_id)
+    print('Waiting collection: ', len(collections_id))
     collections_id.clear()
