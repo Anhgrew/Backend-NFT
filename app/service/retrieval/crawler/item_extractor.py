@@ -23,14 +23,15 @@ extractor = FeatureExtractor()
 def extract_by_link(img_url, list_rm =[], key = ''):
     try:
         img_data = requests.get(img_url, stream=True)
-        while not collection_request.status_code == 200:
+        while not img_data.status_code == 200:
             img_data = requests.get(
                 img_data = requests.get(img_url, stream=True),
         )
         img_pic = PIL.Image.open(img_data.raw).convert("RGB")
         vector_feature_extracted = extractor.extract(img=img_pic)
         return vector_feature_extracted
-    except:
+    except Exception as e:
+        print(e)
         list_rm.append(key)
         return ''
 
