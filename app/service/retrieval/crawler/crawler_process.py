@@ -35,15 +35,24 @@ def update_record():
     update_list = read_crawler_file(COLLECTIONS_TO_UPDATE)
     final_list = {}
     for k in update_list.keys():
-        print(k)
         final_list[str(int(k) + len(storage_list))] = update_list[k]
     append_crawler_file(COLLECTIONS_STORAGE, final_list)
     write_crawler_file(COLLECTIONS_TO_UPDATE, {})
 
 
 def crawl(num_of_collections):
+    print('-------------------------------')
+    print('GET COLLECTION ID')
     get_collections_id(num_of_collections)
+    print('-------------------------------')
+    print('COLLECTION ID TO WAITING')
     update_collections_id()
+    print('-------------------------------')
+    print('GET ITEM ID')
     update_collection_info()
+    print('-------------------------------')
+    print('GET EXTRACTED IMAGE')
     extract_all()
+    print('-------------------------------')
+    print('COLLECTION ID TO CURRENT')
     update_record()

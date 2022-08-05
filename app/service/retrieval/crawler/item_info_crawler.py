@@ -39,6 +39,7 @@ def extract_item_info(item_json):
 
 
 def get_collection_info(token_id):
+    print(CURRENCY + token_id)
     count = 0
     address_book = dict()
     signal = ""
@@ -69,6 +70,7 @@ def get_collection_info(token_id):
             if url != "":
                 count += 1
                 address_book[id] = url
+            print(str(count) + ' items get', end = "\r")
             if count == MAX_ITEMS:
                 break
 
@@ -84,5 +86,4 @@ def get_collection_info(token_id):
     if not pth.exists(ITEMS_STORAGE + token_id):
         os.makedirs(ITEMS_STORAGE + token_id)
     write_crawler_file(ITEMS_STORAGE + token_id + "/address_book.csv", address_book)
-    print(CURRENCY + token_id)
-    print(len(address_book))
+    print('total: ',len(address_book))

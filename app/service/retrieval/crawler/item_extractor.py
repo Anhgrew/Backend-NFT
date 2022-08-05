@@ -35,18 +35,21 @@ def extract_collection(collection_id):
         return
     items_list = read_crawler_file(storage_path + "/address_book.csv")
     extracted_result = dict()
+    count = 0
     for key, value in items_list.items():
         extracted_result[key] = extract_by_link(value)
+        count = count+1
+        print(str(count) + ' items extracted', end = "\r")
+    print(str(count) + ' items extracted', end = "\r")
 
-    print("write to pickle file")
     write_pickle_file(storage_path + "/key.pkl", list(extracted_result.keys()))
     write_pickle_file(storage_path + "/vectors.pkl", list(extracted_result.values()))
     pickle.dump(list(extracted_result.keys()), open(VECTOR_TOKEN_ID_PKL, "ab+"))
     pickle.dump(list(extracted_result.values()), open(VECTOR_FEATURES_PKL, "ab+"))
-    print("done")
 
 
 def extract_all():
     collections_list = read_crawler_file(COLLECTIONS_TO_UPDATE)
     for collection_id in collections_list.values():
+        print('+ ' + collection_id)
         extract_collection(collection_id)
