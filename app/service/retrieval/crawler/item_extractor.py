@@ -20,7 +20,7 @@ COLLECTIONS_TO_UPDATE = settings.COLLECTIONS_TO_UPDATE
 extractor = FeatureExtractor()
 
 
-def extract_by_link(img_url):
+def extract_by_link(img_url, list_rm =[], key = ''):
     try:
         img_data = requests.get(img_url, stream=True)
         while not collection_request.status_code == 200:
@@ -31,9 +31,8 @@ def extract_by_link(img_url):
         vector_feature_extracted = extractor.extract(img=img_pic)
         return vector_feature_extracted
     except:
-        img_pic = PIL.Image.open('D:/Github/Capstone/Backend-NFT/app/static/blank.png').convert("RGB")
-        vector_feature_extracted = extractor.extract(img=img_pic)
-        return vector_feature_extracted
+        list_rm.append(key)
+        return ''
 
 
 
@@ -46,11 +45,19 @@ def extract_collection(collection_id):
     items_list = read_crawler_file(storage_path + "/address_book.csv")
     extracted_result = dict()
     count = 0
+    list_rm = []
     for key, value in items_list.items():
-        extracted_result[key] = extract_by_link(value)
+        extracted_result[key] = extract_by_link(value, list_rm, key)
         count = count+1
         print(str(count) + ' items extracted', end = "\r")
     print(str(count) + ' items extracted')
+    count_rm = 0
+    for val in list_rm:
+        count_rm = count_rm + 1
+        extracted_result.pop(val)
+        print(str(count_rm) + ' items removed', end = "\r")
+    print(str(count_rm) + ' items removed')
+    print(str(len(extracted_result)) + ' items total')
 
     write_pickle_file(storage_path + "/key.pkl", list(extracted_result.keys()))
     write_pickle_file(storage_path + "/vectors.pkl", list(extracted_result.values()))
