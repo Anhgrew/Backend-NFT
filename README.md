@@ -81,7 +81,8 @@
 
 
 Run successfully:
----
+
+![Screenshot from 2022-08-05 08-19-27](https://user-images.githubusercontent.com/47881661/182981397-909e3c97-e657-42c4-bd2b-7dd7fb195e76.png)
 
 
-![Screenshot from 2022-05-03 13-56-35](https://user-images.githubusercontent.com/47881661/166416130-ac9b7758-92c3-46a8-994c-fe26197b137e.png)
+
