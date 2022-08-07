@@ -1,6 +1,6 @@
 # Read csv file to map
 import pickle
-
+import pandas
 
 def read_csv_file(file):
     map = {}
@@ -27,9 +27,8 @@ def append_data_2_pkl_file(data, path):
 
 def load_pickle_file(path):
     res = list()
-    while True:
-        try:
-            res.extend(pickle.load(open(path, "rb")))
-        except EOFError:
-            break
+    try:
+        res = pandas.read_pickle(path)
+    except Exception as e:
+        pass
     return res
