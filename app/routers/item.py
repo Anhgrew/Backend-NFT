@@ -46,7 +46,8 @@ NUM_OF_RESULT = settings.NUM_OF_RESULT
 ## Note: each token, filename, features vector is identified by the order in the array
 full_features = load_pickle_file(FEATURES_PATH)
 tokens = load_pickle_file(TOKENS_PATH)
-
+print('loaded image: ', len(full_features))
+print('loaded token: ', len(tokens))
 
 feature_extractor = {}
 feature_extractor = FeatureExtractor(

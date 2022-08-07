@@ -27,8 +27,9 @@ def append_data_2_pkl_file(data, path):
 
 def load_pickle_file(path):
     res = list()
-    try:
-        res.extend(pickle.load(open(path, "rb")))
-    except EOFError:
-        pass
+    while True:
+        try:
+            res.extend(pickle.load(open(path, "rb")))
+        except EOFError:
+            break
     return res
