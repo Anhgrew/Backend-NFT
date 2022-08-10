@@ -27,8 +27,10 @@ def append_data_2_pkl_file(data, path):
 
 def load_pickle_file(path):
     res = list()
-    try:
-        res = pandas.read_pickle(path)
-    except Exception as e:
-        pass
+    with open(path, "rb") as pickle_file:
+        try:
+            while True:
+                res.extend(pickle.load(pickle_file))
+        except Exception as e:
+            pass
     return res
