@@ -84,7 +84,7 @@ jobs:
   deploy-production:
     name: Deploy To Production Environment
     runs-on: ubuntu-latest
-    needs: deploy-staging
+    needs: build
     steps:
       - name: Approve For Production Deployment
         uses: trstringer/manual-approval@v1
