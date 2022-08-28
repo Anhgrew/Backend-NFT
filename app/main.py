@@ -22,4 +22,3 @@ app.add_middleware(
 
 # Include router of NFT item
 app.include_router(item.router)
-

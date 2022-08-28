@@ -8,17 +8,14 @@ from sklearn.neighbors import NearestNeighbors
 
 from tensorflow.keras.applications.resnet50 import ResNet50
 from tensorflow.keras.applications.resnet50 import preprocess_input
+from tensorflow.keras.applications.efficientnet import EfficientNetB4
 
 
 class FeatureExtractor:
     def __init__(
-        self,
-        vector_features_full=None,
-        # vector_features_pca=None,
-        vector_tokens=None,
-        num_of_return=10,
+        self, vector_features_full=None, vector_tokens=None, num_of_return=10,
     ):
-        self.model = ResNet50(
+        self.model = EfficientNetB4(
             weights="imagenet",
             include_top=False,
             input_shape=(224, 224, 3),
@@ -26,11 +23,10 @@ class FeatureExtractor:
         )
 
         self.vector_features_full = vector_features_full
-        # self.vector_features_pca = vector_features_pca
         self.vector_tokens = vector_tokens
         if vector_features_full == None:
             return
-        num_feature_dimensions = 200  # default
+        num_feature_dimensions = 80  # default
 
         self.pca = PCA(n_components=num_feature_dimensions)
         self.pca.fit(self.vector_features_full)
@@ -96,4 +92,5 @@ class FeatureExtractor:
         similar_tokens = [
             self.vector_tokens[indices[0][i]] for i in range(0, self.num_of_return)
         ]
+
         return similar_tokens

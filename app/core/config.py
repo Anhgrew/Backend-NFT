@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     ITEM_BY_IDS_API: str
     IMAGE_ACCEPTED_TYPES: list
     MAX_ITEMS: int
+    OBJECT_DATABASE: str
 
     class Config:
         env_file = ".env"
