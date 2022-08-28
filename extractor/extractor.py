@@ -70,8 +70,8 @@ class MyEffNetModel:
             self.my_data_name.append(img_id)
 
     def save(self, path="./"):
-        pickle.dump(self.my_data, open(os.path.join(path, "key.pkl"), "wb"))
-        pickle.dump(self.my_data_name, open(os.path.join(path, "vectors.pkl"), "wb"))
+        pickle.dump(self.my_data, open(os.path.join(path, "vectors.pkl"), "wb"))
+        pickle.dump(self.my_data_name, open(os.path.join(path, "keys.pkl"), "wb"))
 
     """
         In this case, we using the json file with the image_url mapping with the object_id

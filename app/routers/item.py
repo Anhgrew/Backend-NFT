@@ -5,8 +5,7 @@ from PIL import Image
 from service.file_handle import load_pickle_file
 from service.feature_extractor import FeatureExtractor
 from core.config import settings
-from database.db import ShoeDatabase
-
+from service.model_results_processing import get_model_predicted_results
 
 # Create Fast API route instance
 router = APIRouter()
@@ -19,7 +18,6 @@ TOKENS_PATH = settings.TOKENS_PATH
 
 NUM_OF_RESULT = settings.NUM_OF_RESULT
 
-shoe_repos = ShoeDatabase()
 
 # Create new feature extractor instance to extract image
 # Read images from extracted folder and load to arrays
@@ -60,7 +58,7 @@ async def upload_image(data: bytes = File(...)):
         # Get top similar item from model and return result from NFT market api
 
         start = time.time()
-        responses = shoe_repos.get_model_predicted_results(result)
+        responses = get_model_predicted_results(result)
         end = time.time()
         print(f"Runtime of the retrieve is {end - start}")
 

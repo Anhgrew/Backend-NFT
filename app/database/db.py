@@ -1,7 +1,7 @@
 import json
 from core.config import settings
 
-# Get top similar images and retrive more info from NFT market
+# Get top similar images and retrieve more info from NFT market
 class ShoeDatabase:
     def __init__(self) -> None:
         self.path = settings.OBJECT_DATABASE
@@ -13,6 +13,9 @@ class ShoeDatabase:
             data = json.loads(json.load(data_file))
         return data
 
-    def get_model_predicted_results(self, ids):
+    def retrieve(self, ids):
         response = [self.database.get(str(id)) for id in ids]
         return response
+
+
+shoe_repositories = ShoeDatabase()
