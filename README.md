@@ -1,6 +1,6 @@
 # *Backend-NFT-API*
 
-## *Technology: FastAPI*
+## *Technology: Python3 - FastAPI*
 
 ### *1. Project folder structure*
 
